@@ -10,9 +10,9 @@ class Config:
     API_HASH = getenv("API_HASH", "42f349f43dad2c998b0e50b0117c47fd")
     BOT_TOKEN = getenv("BOT_TOKEN", "8546171122:AAFuB-MT27BDRjBDckyCPIZdhAy1Vi80CN4")
     # Your Force Subscribe Channel Id Below 
-    CHID = int(getenv("CHID", "")) # Make Bot Admin In This Channel
+    CHID = int(getenv("CHID", "-1003365596711")) # Make Bot Admin In This Channel
     # Admin Or Owner Id Below
-    SUDO = list(map(int, getenv("SUDO", "").split()))
+    SUDO = list(map(int, getenv("SUDO", "5678991839").split()))
     MONGO_URI = getenv("MONGO_URI", "mongodb+srv://shaikharru99_db_user:k5llvkSQdf4ifAN7@cluster0.mo6eijj.mongodb.net/?appName=Cluster0")
     
 cfg = Config()
