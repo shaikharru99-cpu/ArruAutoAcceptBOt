@@ -4,12 +4,7 @@
 
 import asyncio
 from pyrogram import Client, filters, errors
-from pyrogram.types import (
-    Message,
-    InlineKeyboardButton,
-    InlineKeyboardMarkup,
-    CallbackQuery
-)
+from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
 from pyrogram.errors.exceptions.flood_420 import FloodWait
 
 from configs import cfg
@@ -22,7 +17,7 @@ from database import (
     remove_user
 )
 
-# ─────────────────── Client ─────────────────── #
+# ─────────────── BOT CLIENT ─────────────── #
 
 app = Client(
     "approver",
@@ -31,7 +26,7 @@ app = Client(
     bot_token=cfg.BOT_TOKEN
 )
 
-# ─────────────────── Auto Approve Join Requests ─────────────────── #
+# ─────────────── AUTO APPROVE JOIN REQUESTS ─────────────── #
 
 @app.on_chat_join_request(filters.group | filters.channel)
 async def approve(_, m: Message):
@@ -42,7 +37,7 @@ async def approve(_, m: Message):
         await app.send_message(
             m.from_user.id,
             f"👋 **Hello {m.from_user.mention}!**\n\n"
-            f"✅ Your request has been approved in **{m.chat.title}**.\n\n"
+            f"✅ Your join request has been approved in **{m.chat.title}**.\n\n"
             "__Powered By : @VJ_Botz__"
         )
 
@@ -53,7 +48,7 @@ async def approve(_, m: Message):
     except Exception as e:
         print(e)
 
-# ─────────────────── /start (PROFESSIONAL UI) ─────────────────── #
+# ─────────────── /start (PROFESSIONAL UI) ─────────────── #
 
 @app.on_message(filters.private & filters.command("start"))
 async def start(_, m: Message):
@@ -91,7 +86,7 @@ async def start(_, m: Message):
 
     add_user(m.from_user.id)
 
-# ─────────────────── Users Stats ─────────────────── #
+# ─────────────── USERS STATS ─────────────── #
 
 @app.on_message(filters.command("users") & filters.user(cfg.SUDO))
 async def stats(_, m: Message):
@@ -104,7 +99,7 @@ async def stats(_, m: Message):
         f"📦 Total : `{u + g}`"
     )
 
-# ─────────────────── Broadcast ─────────────────── #
+# ─────────────── BROADCAST ─────────────── #
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def broadcast(_, m: Message):
@@ -135,7 +130,7 @@ async def broadcast(_, m: Message):
         f"👻 Deactivated: `{deactivated}`"
     )
 
-# ─────────────────── Run ─────────────────── #
+# ─────────────── RUN BOT ─────────────── #
 
-print("🤖 Auto Approve Bot Started!")
+print("🤖 Auto Approve Bot is Running...")
 app.run()
