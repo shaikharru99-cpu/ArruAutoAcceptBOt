@@ -100,31 +100,43 @@ async def stats(_, m: Message):
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def broadcast(_, m: Message):
-    if not m.reply_to_message:
-        return await m.reply_text("❌ **Reply to a message to broadcast.**")
 
-    msg = await m.reply_text("⚡ **Broadcasting...**")
+    if not m.reply_to_message:
+        return await m.reply_text(
+            "❌ **Broadcast failed**\n\n"
+            "Please **reply to any message** (text / photo / video / voice / forwarded)\n"
+            "and send `/bcast`"
+        )
+
+    msg = m.reply_to_message
+    status = await m.reply_text("⚡ **Broadcasting...**")
+
     success = failed = blocked = deactivated = 0
 
     for user in users.find():
         try:
-            await m.reply_to_message.copy(user["user_id"])
+            await msg.copy(user["user_id"])
             success += 1
+
         except FloodWait as e:
             await asyncio.sleep(e.value)
+
         except errors.InputUserDeactivated:
             remove_user(user["user_id"])
             deactivated += 1
+
         except errors.UserIsBlocked:
             blocked += 1
+
         except Exception:
             failed += 1
 
-    await msg.edit(
-        f"✅ **Success:** `{success}`\n"
-        f"❌ **Failed:** `{failed}`\n"
-        f"🚫 **Blocked:** `{blocked}`\n"
-        f"👻 **Deactivated:** `{deactivated}`"
+    await status.edit(
+        f"✅ **Broadcast Completed**\n\n"
+        f"📨 Sent: `{success}`\n"
+        f"❌ Failed: `{failed}`\n"
+        f"🚫 Blocked: `{blocked}`\n"
+        f"👻 Deactivated: `{deactivated}`"
     )
 
 # ─────────────── RUN BOT ─────────────── #
