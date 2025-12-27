@@ -1,7 +1,3 @@
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
 import asyncio
 from pyrogram import Client, filters, errors
 from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
@@ -36,10 +32,11 @@ async def approve(_, m: Message):
 
         await app.send_message(
             m.from_user.id,
-            f"🎉 **WELCOME!** 🎉\n\n"
-            f"Your join request has been **approved** in:\n"
-            f"**{m.chat.title}**\n\n"
-            "__Powered By @VJ_Botz__"
+            (
+                "🎉 **WELCOME!** 🎉\n\n"
+                f"Your join request has been approved in:\n"
+                f"**{m.chat.title}**"
+            )
         )
 
         add_user(m.from_user.id)
@@ -49,7 +46,7 @@ async def approve(_, m: Message):
     except Exception as e:
         print(e)
 
-# ─────────────── /start (CONFETTI + BOLD UI) ─────────────── #
+# ─────────────── /start (CONFETTI + BOLD, NO IMAGE) ─────────────── #
 
 @app.on_message(filters.private & filters.command("start"))
 async def start(_, m: Message):
@@ -76,12 +73,10 @@ async def start(_, m: Message):
             "**• Automatically approve pending join requests**\n"
             "**• Works in Channels & Groups**\n\n"
             "**⚙️ HOW TO USE**\n"
-            "**1️⃣ Add me to your Channel or Group**\n"
-            "**2️⃣ Promote me as Admin**\n"
-            "**3️⃣ Enable Add Members permission**\n\n"
+            "**1️⃣ Add me as Admin in your Channel / Group**\n"
+            "**2️⃣ Give Add Members / Invite Users permission**\n\n"
             "**🚀 THAT’S IT!**\n"
-            "**All join requests will be approved automatically.**\n\n"
-            "__Powered By @VJ_Botz__ 🥳"
+            "**I’ll handle all join requests automatically.**"
         ),
         reply_markup=keyboard
     )
