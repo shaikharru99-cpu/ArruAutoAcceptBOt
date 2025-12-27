@@ -1,22 +1,18 @@
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
 from os import getenv
 
 class Config:
-    API_ID = int(getenv("30163640", 0))
-    API_HASH = getenv("42f349f43dad2c998b0e50b0117c47fd")
-    BOT_TOKEN = getenv("8546171122:AAFuB-MT27BDRjBDckyCPIZdhAy1Vi80CN4")
+    API_ID = int(getenv("API_ID", 0))
+    API_HASH = getenv("API_HASH")
+    BOT_TOKEN = getenv("BOT_TOKEN")
 
-    # Force Subscribe Channel ID (Bot must be admin)
+    # Force Subscribe Channel ID
     CHID = int(getenv("CHID", 0))
 
-    # Admin / Owner IDs
-    SUDO = list(map(int, getenv("SUDO", "5678991839").split())) if getenv("SUDO") else []
+    # Admin IDs
+    SUDO = list(map(int, getenv("SUDO", "").split())) if getenv("SUDO") else []
 
     # MongoDB
-    MONGO_URI = getenv("mongodb+srv://shaikharru99_db_user:k5llvkSQdf4ifAN7@cluster0.mo6eijj.mongodb.net/?appName=Cluster0")
+    MONGO_URI = getenv("MONGO_URI")
 
     @staticmethod
     def validate():
@@ -30,7 +26,3 @@ class Config:
 
 cfg = Config()
 cfg.validate()
-
-# Don't Remove Credit @VJ_Botz
-# Subscribe YouTube Channel For Amazing Bot @Tech_VJ
-# Ask Doubt on telegram @KingVJ01
