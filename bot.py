@@ -127,7 +127,7 @@ async def start(_, m: Message):
 
     await m.reply_text(
     (
-        "**Wᴇʟᴄᴏᴍᴇ Tᴏ Aᴜᴛᴏ Rᴇᴀᴄᴛɪᴏɴ Bᴏᴛ 🤖**\n\n"
+        "**Wᴇʟᴄᴏᴍᴇ Tᴏ Aᴜᴛᴏ Rᴇǫᴜᴇsᴛ Aᴄᴄᴇᴘᴛ Bᴏᴛ 🤖**\n\n"
         "**I Aᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ Aᴘᴘʀᴏᴠᴇ Tᴏ Aʟʟ Jᴏɪɴ Rᴇǫᴜᴇsᴛs.**\n\n"
         "**⚙️ Hᴏᴡ Tᴏ Usᴇ:**\n"
         "**1️⃣ ➜ Usᴇ Aᴅᴅ Mᴇ Aꜱ Aᴅᴍɪɴ Iɴ Yᴏᴜʀ Cʜᴀɴɴᴇʟ / Gʀᴏᴜᴘ**\n"
