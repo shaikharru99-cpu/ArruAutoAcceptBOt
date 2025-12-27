@@ -115,12 +115,12 @@ async def start(_, m: Message):
     keyboard = InlineKeyboardMarkup(
         [
             [InlineKeyboardButton(
-                "➕ Add To Channel",
+                "➕ Aᴅᴅ Tᴏ Cʜᴀɴɴᴇʟ",
                 url=f"https://t.me/{(await app.get_me()).username}?startchannel=true"
             )],
             [
-                InlineKeyboardButton("📢 Bot Channel", url="https://t.me/VJ_Botz"),
-                InlineKeyboardButton("👤 Owner", url="https://t.me/KingVJ01")
+                InlineKeyboardButton("🗣 Bᴏᴛ Cʜᴀɴɴᴇʟ", url="https://t.me/+33y5cQhKoTQxYTc1"),
+                InlineKeyboardButton("👤 Oᴡɴᴇʀ", url="https://t.me/BlacklistedOX")
             ]
         ]
     )
