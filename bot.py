@@ -126,20 +126,16 @@ async def start(_, m: Message):
     )
 
     await m.reply_text(
-        (
-            "🎉🎊 **WELCOME TO AUTO APPROVE BOT** 🎊🎉\n\n"
-            "**🤖 WHAT I DO**\n"
-            "• Automatically approve pending join requests\n"
-            "• Works in Channels & Groups\n\n"
-            "**⚙️ HOW TO USE**\n"
-            "1️⃣ Add me to your Channel / Group\n"
-            "2️⃣ Promote me as Admin\n"
-            "3️⃣ Enable Add Members permission\n\n"
-            "🚀 **That’s it!**\n"
-            "All join requests will be approved automatically."
-        ),
-        reply_markup=keyboard
-    )
+    (
+        "**Wᴇʟᴄᴏᴍᴇ Tᴏ Aᴜᴛᴏ Rᴇᴀᴄᴛɪᴏɴ Bᴏᴛ 🤖**\n\n"
+        "**I Aᴜᴛᴏᴍᴀᴛɪᴄᴀʟʟʏ Aᴘᴘʀᴏᴠᴇ Tᴏ Aʟʟ Jᴏɪɴ Rᴇǫᴜᴇsᴛs.**\n\n"
+        "**⚙️ Hᴏᴡ Tᴏ Usᴇ:**\n"
+        "**1️⃣ ➜ Usᴇ Aᴅᴅ Mᴇ Aꜱ Aᴅᴍɪɴ Iɴ Yᴏᴜʀ Cʜᴀɴɴᴇʟ / Gʀᴏᴜᴘ**\n"
+        "**2️⃣ 🔐 Gɪᴠᴇ Mᴇ Aᴅᴅ Mᴇᴍʙᴇʀs / Iɴᴠɪᴛᴇ Usᴇʀs Pᴇʀᴍɪssɪᴏɴ**\n\n"
+        "**👇 Tᴀᴘ Bᴇʟᴏᴡ Tᴏ Gᴇᴛ Sᴛᴀʀᴛᴇᴅ 🚀**"
+    ),
+    reply_markup=keyboard
+)
 
     add_user(m.from_user.id)
 
