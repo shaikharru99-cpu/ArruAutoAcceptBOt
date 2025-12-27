@@ -1,6 +1,11 @@
 import asyncio
 from pyrogram import Client, filters, errors
-from pyrogram.types import Message, InlineKeyboardButton, InlineKeyboardMarkup
+from pyrogram.types import (
+    Message,
+    InlineKeyboardButton,
+    InlineKeyboardMarkup
+)
+from pyrogram.enums import ChatMemberStatus
 from pyrogram.errors.exceptions.flood_420 import FloodWait
 
 from configs import cfg
@@ -22,31 +27,56 @@ app = Client(
     bot_token=cfg.BOT_TOKEN
 )
 
-# ─────────────── AUTO APPROVE JOIN REQUESTS ─────────────── #
+# ─────────────── AUTO APPROVE + JOIN MESSAGE ─────────────── #
 
 @app.on_chat_join_request(filters.group | filters.channel)
 async def approve(_, m: Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(m.chat.id, m.from_user.id)
+        add_user(m.from_user.id)
 
         await app.send_message(
             m.from_user.id,
             (
-                "🎉 **WELCOME!** 🎉\n\n"
-                f"Your join request has been approved in:\n"
-                f"**{m.chat.title}**"
+                "🎉🎊 **WELCOME TO THE CHANNEL!** 🎊🎉\n\n"
+                "✅ **Your join request has been approved successfully.**\n\n"
+                f"📢 **Channel:** `{m.chat.title}`\n\n"
+                "✨ You are now an official member.\n"
+                "Enjoy all the exclusive content here.\n\n"
+                "🚀 Stay connected!"
             )
         )
 
-        add_user(m.from_user.id)
-
     except errors.PeerIdInvalid:
         pass
-    except Exception as e:
-        print(e)
+    except Exception:
+        pass
 
-# ─────────────── /start (CONFETTI + BOLD, NO IMAGE) ─────────────── #
+# ─────────────── LEAVE MESSAGE ─────────────── #
+
+@app.on_chat_member_updated(filters.group | filters.channel)
+async def leave_handler(_, cmu):
+    try:
+        if (
+            cmu.old_chat_member.status in
+            [ChatMemberStatus.MEMBER, ChatMemberStatus.RESTRICTED]
+            and cmu.new_chat_member.status == ChatMemberStatus.LEFT
+        ):
+            await app.send_message(
+                cmu.from_user.id,
+                (
+                    "⚠️ **YOU LEFT THE CHANNEL** ⚠️\n\n"
+                    f"📢 **Channel:** `{cmu.chat.title}`\n\n"
+                    "😔 You are no longer a member.\n\n"
+                    "🔁 **Want to join again?**\n"
+                    "Just send `/start` and rejoin anytime."
+                )
+            )
+    except Exception:
+        pass
+
+# ─────────────── /start UI ─────────────── #
 
 @app.on_message(filters.private & filters.command("start"))
 async def start(_, m: Message):
@@ -70,20 +100,21 @@ async def start(_, m: Message):
         (
             "🎉🎊 **WELCOME TO AUTO APPROVE BOT** 🎊🎉\n\n"
             "**🤖 WHAT I DO**\n"
-            "**• Automatically approve pending join requests**\n"
-            "**• Works in Channels & Groups**\n\n"
+            "• Automatically approve pending join requests\n"
+            "• Works in Channels & Groups\n\n"
             "**⚙️ HOW TO USE**\n"
-            "**1️⃣ Add me as Admin in your Channel / Group**\n"
-            "**2️⃣ Give Add Members / Invite Users permission**\n\n"
-            "**🚀 THAT’S IT!**\n"
-            "**I’ll handle all join requests automatically.**"
+            "1️⃣ Add me to your Channel / Group\n"
+            "2️⃣ Promote me as Admin\n"
+            "3️⃣ Enable Add Members permission\n\n"
+            "🚀 **That’s it!**\n"
+            "All join requests will be approved automatically."
         ),
         reply_markup=keyboard
     )
 
     add_user(m.from_user.id)
 
-# ─────────────── USERS STATS ─────────────── #
+# ─────────────── USERS STATS (ADMIN ONLY) ─────────────── #
 
 @app.on_message(filters.command("users") & filters.user(cfg.SUDO))
 async def stats(_, m: Message):
@@ -91,20 +122,19 @@ async def stats(_, m: Message):
     g = all_groups()
     await m.reply_text(
         f"📊 **BOT STATISTICS**\n\n"
-        f"👤 **Users:** `{u}`\n"
-        f"👥 **Groups:** `{g}`\n"
-        f"📦 **Total:** `{u + g}`"
+        f"👤 Users: `{u}`\n"
+        f"👥 Groups: `{g}`\n"
+        f"📦 Total: `{u + g}`"
     )
 
-# ─────────────── BROADCAST ─────────────── #
+# ─────────────── BROADCAST (REPLY ONLY, ALL MEDIA) ─────────────── #
 
 @app.on_message(filters.command("bcast") & filters.user(cfg.SUDO))
 async def broadcast(_, m: Message):
 
     if not m.reply_to_message:
         return await m.reply_text(
-            "❌ **Broadcast failed**\n\n"
-            "Please **reply to any message** (text / photo / video / voice / forwarded)\n"
+            "❌ **Reply to any message** (text / photo / video / voice / forwarded)\n"
             "and send `/bcast`"
         )
 
