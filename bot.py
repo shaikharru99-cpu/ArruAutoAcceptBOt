@@ -28,38 +28,17 @@ app = Client(
 )
 
 # ───────────── AUTO APPROVE + JOIN UI ─────
-
 @app.on_chat_join_request(filters.group | filters.channel)
-async def approve(_, m: ChatJoinRequest):
+async def approve(_, m: Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(m.chat.id, m.from_user.id)
 
-        # Create buttons
-        keyboard = InlineKeyboardMarkup(
-            [
-                [
-                    InlineKeyboardButton(
-                        "📢 Visit Channel",
-                        url="https://t.me/your_channel_username"  # Replace with your channel link
-                    ),
-                    InlineKeyboardButton(
-                        "🤖 Add to Your Channel",
-                        url=f"https://t.me/{app.me.username}?startchannel=true"  # Bot link for adding to channel
-                    )
-                ]
-            ]
-        )
-
         await app.send_message(
             m.from_user.id,
-            (
-                "🎉 WELCOME! 🎉\n\n"
-                "Your join request has been approved!\n\n"
-                "Join our channel for more updates and add this bot to your own channels for automatic approval.\n\n"
-                "Powered By @VJ_Botz"
-            ),
-            reply_markup=keyboard
+            f"👋 **Hello {m.from_user.mention}!**\n\n"
+            f"✅ Your join request has been approved in **{m.chat.title}**.\n\n"
+            "__Powered By : @VJ_Botz__"
         )
 
         add_user(m.from_user.id)
