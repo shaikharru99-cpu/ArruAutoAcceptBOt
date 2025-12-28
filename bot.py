@@ -51,61 +51,26 @@ async def approve(_, m: Message):
             ]
         )
 
-        await app.send_message(
-            m.from_user.id,
-            (
-                "🎉 **WELCOME TO MY OWNER CHANNEL** 🎉\n\n"
-                "You have successfully joined the channel through my owner bot.\n\n"
-                "✅ **Your request has been accepted.**\n"
-                "You are now officially a member of our channel.\n\n"
-                "✨ Enjoy and explore all the content here 😊"
-            ),
-            reply_markup=keyboard
-        )
-
-    except errors.PeerIdInvalid:
-        pass
-    except Exception:
-        pass
-
-# ───────────── LEAVE UI ───────────── #
-
-@app.on_chat_member_updated(filters.group | filters.channel)
-async def leave_handler(_, cmu):
-    try:
-        if (
-            cmu.old_chat_member.status in
-            [ChatMemberStatus.MEMBER, ChatMemberStatus.RESTRICTED]
-            and cmu.new_chat_member.status == ChatMemberStatus.LEFT
-        ):
-            channel_link = (
-                f"https://t.me/{cmu.chat.username}"
-                if cmu.chat.username else None
-            )
-
-            keyboard = InlineKeyboardMarkup(
-                [
-                    [InlineKeyboardButton("🔄 Rejoin Channel", url=channel_link)],
-                    [InlineKeyboardButton(
-                        "🤖 Add Bot To Your Channel",
-                        url=f"https://t.me/{(await app.get_me()).username}?startchannel=true"
-                    )]
-                ]
-            )
-
+        # force PM + exception handle + log
+        try:
             await app.send_message(
-                cmu.from_user.id,
+                m.from_user.id,
                 (
-                    "⚠️ **YOU LEFT THE CHANNEL** ⚠️\n\n"
-                    "It looks like you left our channel.\n\n"
-                    "If this was a mistake or you want to rejoin,\n"
-                    "click the button below 👇\n\n"
-                    "**Channel link is given below – please join again.**"
+                    "🎉 **WELCOME TO MY OWNER CHANNEL** 🎉\n\n"
+                    "You have successfully joined the channel through my owner bot.\n\n"
+                    "✅ **Your request has been accepted.**\n"
+                    "You are now officially a member of our channel.\n\n"
+                    "✨ Enjoy and explore all the content here 😊"
                 ),
                 reply_markup=keyboard
             )
-    except Exception:
-        pass
+        except errors.PeerIdInvalid:
+            logger.warning(f"PeerIdInvalid user {m.from_user.id}")
+        except Exception as e:
+            logger.warning(f"PM failed user {m.from_user.id}: {e}")
+
+    except Exception as e:
+        logger.exception(e)
 
 # ───────────── /start UI ───────────── #
 
