@@ -38,7 +38,7 @@ async def approve(_, m: Message):
             m.from_user.id,
             f"👋 **Hello {m.from_user.mention}!**\n\n"
             f"✅ Your join request has been approved in **{m.chat.title}**.\n\n"
-            "__Powered By : @VJ_Botz__"
+            "__Powered By : @BlacklistedOX"
         )
 
         add_user(m.from_user.id)
