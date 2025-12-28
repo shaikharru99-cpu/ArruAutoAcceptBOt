@@ -28,9 +28,6 @@ app = Client(
 )
 
 # ───────────── AUTO APPROVE + JOIN UI ─────
-from pyrogram import Client, filters
-from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
-from pyrogram import errors
 
 @app.on_chat_join_request(filters.group | filters.channel)
 async def approve(_, m: ChatJoinRequest):
