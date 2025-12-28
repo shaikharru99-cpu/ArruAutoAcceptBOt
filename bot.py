@@ -28,20 +28,41 @@ app = Client(
 )
 
 # ───────────── AUTO APPROVE + JOIN UI ─────
+from pyrogram import Client, filters
+from pyrogram.types import InlineKeyboardMarkup, InlineKeyboardButton
+from pyrogram import errors
+
 @app.on_chat_join_request(filters.group | filters.channel)
-async def approve(_, m: Message):
+async def approve(_, m: ChatJoinRequest):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(m.chat.id, m.from_user.id)
+
+        # Create buttons
+        keyboard = InlineKeyboardMarkup(
+            [
+                [
+                    InlineKeyboardButton(
+                        "📢 Visit Channel",
+                        url="https://t.me/your_channel_username"  # Replace with your channel link
+                    ),
+                    InlineKeyboardButton(
+                        "🤖 Add to Your Channel",
+                        url=f"https://t.me/{app.me.username}?startchannel=true"  # Bot link for adding to channel
+                    )
+                ]
+            ]
+        )
 
         await app.send_message(
             m.from_user.id,
             (
                 "🎉 WELCOME! 🎉\n\n"
-                f"Your join request has been approved in:\n"
-                f"{m.chat.title}\n\n"
+                "Your join request has been approved!\n\n"
+                "Join our channel for more updates and add this bot to your own channels for automatic approval.\n\n"
                 "Powered By @VJ_Botz"
-            )
+            ),
+            reply_markup=keyboard
         )
 
         add_user(m.from_user.id)
