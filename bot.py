@@ -29,13 +29,14 @@ app = Client(
 
 # ───────────── AUTO APPROVE + JOIN UI ───────────── #
 
-@app.on_chat_join_request(filters.group | filters.channel)
+from pyrogram.types import InlineKeyboardButton, InlineKeyboardMarkup
+
 async def approve(_, m: Message):
     try:
         add_group(m.chat.id)
         await app.approve_chat_join_request(m.chat.id, m.from_user.id)
-        add_user(m.from_user.id)
 
+        # Channel link (public/private safe)
         channel_link = (
             f"https://t.me/{m.chat.username}"
             if m.chat.username else None
@@ -43,34 +44,36 @@ async def approve(_, m: Message):
 
         keyboard = InlineKeyboardMarkup(
             [
-                [InlineKeyboardButton("🔊 Visit Channel", url=channel_link)],
-                [InlineKeyboardButton(
-                    "🤖 Add Bot To Your Channel",
-                    url=f"https://t.me/{(await app.get_me()).username}?startchannel=true"
-                )]
+                [
+                    InlineKeyboardButton("🔊 Visit Now", url=channel_link)
+                ],
+                [
+                    InlineKeyboardButton(
+                        "➕ Add Bot To Channel",
+                        url=f"https://t.me/{(await app.get_me()).username}?startchannel=true"
+                    )
+                ]
             ]
         )
 
-        # force PM + exception handle + log
-        try:
-            await app.send_message(
-                m.from_user.id,
-                (
-                    "🎉 **WELCOME TO MY OWNER CHANNEL** 🎉\n\n"
-                    "You have successfully joined the channel through my owner bot.\n\n"
-                    "✅ **Your request has been accepted.**\n"
-                    "You are now officially a member of our channel.\n\n"
-                    "✨ Enjoy and explore all the content here 😊"
-                ),
-                reply_markup=keyboard
-            )
-        except errors.PeerIdInvalid:
-            logger.warning(f"PeerIdInvalid user {m.from_user.id}")
-        except Exception as e:
-            logger.warning(f"PM failed user {m.from_user.id}: {e}")
+        await app.send_message(
+            m.from_user.id,
+            (
+                "🎉 **WELCOME!** 🎉\n\n"
+                "✅ **Your join request has been approved successfully.**\n\n"
+                f"📢 **Channel:** `{m.chat.title}`\n\n"
+                "✨ You can now enjoy all the content."
+            ),
+            reply_markup=keyboard
+        )
 
+        add_user(m.from_user.id)
+
+    except errors.PeerIdInvalid:
+        # user ne /start nahi kiya
+        pass
     except Exception as e:
-        logger.exception(e)
+        print(e)
 
 # ───────────── /start UI ───────────── #
 
